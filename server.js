@@ -1,17 +1,15 @@
 // Require express and mongoose
 const express = require("express");
 const db = require('./config/connection');
-const routes = require('./routes');
+const apiRouter = require('./routes/index')
 
-const app = express();
 const PORT = process.env.PORT || 3001;
+const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static("public"));
-
-app.use(routes);
+app.use(apiRouter);
 
 
 db.once('open', () => {
