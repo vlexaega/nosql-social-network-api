@@ -1,19 +1,22 @@
 // Require Users Model
-const {Users} = require('../models');
+const Users = require('../models/Users');
 
 // Set up Users Controller
 const usersController = {
     
     // Create a new User
-    createUsers({body}, res) {
-        Users.create(body)
-        .then(dbUsersData => res.json(dbUsersData))
-        .catch(err => res.status(400).json(err));
+    createUsers(req, res) {
+        const { body } = req;
+        Users.createUser(body)
+            .then(dbUsersData => res.json(dbUsersData))
+            .catch(err => res.status(400).json(err));
     },
+
 
     // Get All Users
     getAllUsers(req, res) {
-        Users.find({})
+        const { params } = req;
+        Users.find({ _id: params.id })
         // populate users thoughts
         .populate({path: 'thoughts', select: '-__v'})
         // populate user friends
